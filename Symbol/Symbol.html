@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script>
+        let id = Symbol("Hello");
+        console.log(id); //printing it to console will show the symbol
+
+        //But displaying it to document will generate error in the console
+       /*
+        alert(id);
+        let text = document.getElementById("text");
+        text.innerHTML = id;
+*/
+        // It works:
+        function handle() {
+            alert(id.toString());
+            alert(id.description);
+        }
+
+        let age = Symbol("age");
+
+        let user = {
+            name: "mano",
+            class: "SE-19",
+            [age]: 21     //to use symbol as key of object --> use square brackets around variable name
+        };
+
+        console.log(user);
+
+        let user2 = {
+            name: "maryam",
+            class: "BioTech",
+        };
+
+        user2[age] = 20;  //square bracket syntax for Symbol
+        user2.bff = "mano";
+        console.log(user2);
+
+        // can't access Symbol with dot operator instead square brackets
+        console.log(user.age); //Undefined 
+        console.log(user[age]); //Correct
+
+// unlike other keys, "Symbol" can't be iterated within 'for-in' loop 
+        for (let key in user2) {
+            console.log(key);
+        }
+
+        //Symbol will not be part of object. It's hidden
+        console.log(JSON.stringify(user));
+
+// In order to make the "Symbol" value a part of JSON when object is stringified -> convert Symbol to string and then make it object's key-value pair
+user.anotherSymbol = (Symbol("anotherSymbol")).description;
+console.log(JSON.stringify(user))
+
+
+    </script>
+
+</head>
+
+<body>
+    <h1>Symbol</h1>
+    <p>
+        Symbols are guaranteed to be unique.
+        <br>
+        Every Symbol() call is guaranteed to return a unique Symbol.
+        <br>
+        age1 = Symbol("21") , age2 = Symbol("25") ----> <b> age1===age2 //'false' </b> OR <b>Symbol('foo') ===
+            Symbol('foo') //false</b>
+    </p>
+
+    <h2>You can't creat an explicit Symbol wrapper object using below syntax</h2>
+    <b>const sym = new Symbol(); // TypeError</b>
+
+    <p>
+        If you really want to create a Symbol wrapper object, you can use the Object() function: <br>
+        const sym = Symbol('foo');
+        typeof sym // "symbol"
+        const symObj = Object(sym);
+        typeof symObj // "object"
+    </p>
+
+    <!-- For testing purpose -->
+    <h1 id="test"></h1>
+
+    <button onclick="handle()">Click me to test line# 20, 21</button>
+
+</body>
+
+</html>
