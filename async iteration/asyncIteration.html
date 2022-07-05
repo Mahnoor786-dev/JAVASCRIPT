@@ -2,21 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Async Iterators</title>
-    <meta name="viewport" content="width=device-width">
-    <style>
-        
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async iterator</title>
 </head>
 <body>
     <header>
-        <h1>Async Iterators</h1>
-        <h2>Handling Data Streams</h2>
+        <h1 style="text-align: center; color: rgb(2, 2, 138);">Async Iterators</h1>
+        <h3>Handling Data Streams</h3>
     </header>
     <main>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis, iure veniam reprehenderit quo et natus perferendis, modi nostrum facere similique aliquid maxime, consectetur facilis. Mollitia labore sapiente natus cumque est.</p>
+        <p> This is a simple example of how to use async iterators to handle data streams.
+            <br> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis, iure veniam reprehenderit quo et natus perferendis,. Mollitia labore sapiente natus cumque est.</p>
+        <button id="btn">Fetch data</button>
         <pre id="output">
-            
         </pre>
     </main>    
     <script>
@@ -31,13 +30,14 @@
                 next: async function(){
                     //early pre-emptive move
                     let rand = Math.random();
-                    if(rand > 0.7){
+                    if(rand > 0.9){
                         return {
                             value: undefined,
                             done: true
                         };
                     }
-                    let request = new Request(URL+`?r=${rand}`, {
+                    //else, fetch data
+                    let request = new Request(URL, {
                         method: 'GET',
                         mode: 'cors'
                     });
@@ -55,26 +55,26 @@
         }
         
         let output = document.getElementById('output');
-        let main = document.querySelector('main');
-        main.addEventListener('click', d);
+        let btn = document.querySelector('#btn');
+        btn.addEventListener('click', displayData);
         
-        function d(ev){
+        function displayData(ev){
             //start getting data
             //output.textContent += JSON.stringify(d);
-            let iterator = posts[Symbol.iterator]();
-            
+            let iterator = posts[Symbol.iterator]();  //get iterator method
+                        
+            // IIFE
             (async function getData(){
                 let data = await (iterator.next());
                 if(data.value && !data.done){
                     output.textContent += '\r\n' + JSON.stringify(data.value);
                     console.log('getData', data.value);
-                    setTimeout(getData, 2000);
+                    setTimeout(getData, 500); //recursive calls
                 }else{
-                    console.log( 'Done:', data.done );
-                    output.textContent += '\r\n DONE.';
+                    console.log( 'Done: ', data.done );
+                    output.textContent += '\r\n Done fetching data.';
                 }
             })();
-            // IIFE
             //  for await( let val of obj){ }
         }
         
