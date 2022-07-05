@@ -9,6 +9,7 @@
 <body>
     <header>
         <h1 style="text-align: center; color: rgb(2, 2, 138);">Async Iterators</h1>
+        <strong> Asynchronous iteration is needed when values come asynchronously: after setTimeout or another kind of delay. </strong>
         <h3>Handling Data Streams</h3>
     </header>
     <main>
@@ -23,8 +24,9 @@
         //retrieves 100 records
         //let's pretend that there are millions of records
         
-        let posts = {};
-        posts[Symbol.iterator] = function(){
+        let posts = {
+
+            [Symbol.asyncIterator](){
             const URL = "//jsonplaceholder.typicode.com/posts";
             return {
                 next: async function(){
@@ -53,6 +55,7 @@
                 }
             }
         }
+    };
         
         let output = document.getElementById('output');
         let btn = document.querySelector('#btn');
@@ -72,7 +75,7 @@
                     setTimeout(getData, 500); //recursive calls
                 }else{
                     console.log( 'Done: ', data.done );
-                    output.textContent += '\r\n Done fetching data.';
+                    output.textContent += `\r\n DONE fetching data `;
                 }
             })();
             //  for await( let val of obj){ }
